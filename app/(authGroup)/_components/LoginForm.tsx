@@ -8,21 +8,21 @@ import { Mail, Lock, ArrowRight } from "lucide-react"
 import { loginAction } from "../_actions/loginAction"
 import { useActionState, useEffect } from "react"
 import { toast } from "sonner"
-import { useRouter } from "next/navigation"
+// import { useRouter } from "next/navigation"
 
 const LoginForm = () => {
     const [state, action, pending] = useActionState(loginAction, false);
-    const router = useRouter();
+    // const router = useRouter();
     useEffect(() => {
         if (!state) return;
-        if (state.success) {
-            toast.success(state.message || 'Login Successful')
-            router.push('/dashboard')
-        }
+        // if (state.success) {
+        //     toast.success(state.message || 'Login Successful')
+        //     // router.push('/dashboard')
+        // }
         if (!state.success) {
             toast.error(state.message || 'Login Failed')
         }
-    }, [state, router])
+    }, [state])
     return (
         <Card className="border-border/60 bg-card/60 backdrop-blur-xl shadow-xl shadow-black/5">
             <CardContent className="p-6 sm:p-8">
@@ -85,6 +85,7 @@ const LoginForm = () => {
                         {
                             pending ? 'Submitting...' : 'Login'
                         }
+
                         <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Button>
 
