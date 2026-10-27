@@ -14,8 +14,8 @@ type LoginState = {
 }
 
 export const loginAction = async (prevState: LoginState, formData: FormData) => {
-    console.log(formData);
-    console.log(prevState)
+    // console.log(formData);
+    // console.log(prevState)
     const email = formData.get('email');
     const password = formData.get('password');
     // console.log(email, password);
@@ -45,7 +45,7 @@ export const loginAction = async (prevState: LoginState, formData: FormData) => 
             maxAge: 60 * 60 * 24 * 7,
             sameSite: 'lax'
         });
-        redirect('/dashboard', 'replace')
+        // redirect('/dashboard', 'replace')
     }
     console.log(result)
     return result;
