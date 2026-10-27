@@ -15,6 +15,7 @@
 // } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getMe } from "@/service/getMe";
+import LoginPage from "../(authGroup)/login/page";
 // import { Badge } from "@/components/ui/badge";
 // import { Card, CardContent } from "@/components/ui/card";
 // import NavBar from "@/components/shared/NavBar";
@@ -108,6 +109,7 @@ export default async function HomePage() {
       <Button size={"lg"} variant={"destructive"}>
         Click Me
       </Button>
+      <LoginPage />
     </div>
 
   );

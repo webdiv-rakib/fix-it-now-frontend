@@ -19,7 +19,7 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", "font-sans", dmSans.variable, notoSansHeading.variable)}
     >
       <body className="min-h-full flex flex-col">
-        <NavBar/>
+        {/* <NavBar/> */}
         <Toaster position="top-right" richColors />
         {children}
       </body>

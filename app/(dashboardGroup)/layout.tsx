@@ -1,11 +1,13 @@
+import NavBar from '@/components/shared/NavBar'
 import React from 'react'
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+const DashboardGroupLayout = ({ children }: { children: React.ReactNode }) => {
     return (
         <div>
+            <NavBar />
             {children}
         </div>
     )
 }
 
-export default DashboardLayout
+export default DashboardGroupLayout
