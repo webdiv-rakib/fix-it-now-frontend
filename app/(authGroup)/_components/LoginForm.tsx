@@ -11,8 +11,8 @@ import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 
 const LoginForm = () => {
-    const router = useRouter();
     const [state, action, pending] = useActionState(loginAction, false);
+    const router = useRouter();
     useEffect(() => {
         if (!state) return;
         if (state.success) {
@@ -22,7 +22,7 @@ const LoginForm = () => {
         if (!state.success) {
             toast.error(state.message || 'Login Failed')
         }
-    }, [state,router])
+    }, [state])
     return (
         <Card className="border-border/60 bg-card/60 backdrop-blur-xl shadow-xl shadow-black/5">
             <CardContent className="p-6 sm:p-8">

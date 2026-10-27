@@ -14,10 +14,10 @@ type LoginState = {
 }
 
 export const loginAction = async (prevState: LoginState, formData: FormData) => {
-    console.log(formData);
+    // console.log(formData);
     const email = formData.get('email');
     const password = formData.get('password');
-    console.log(email, password);
+    // console.log(email, password);
     const payload = {
         email,
         password
@@ -31,7 +31,7 @@ export const loginAction = async (prevState: LoginState, formData: FormData) => 
         }
     )
     const result = await res.json();
-    console.log(result);
+    // console.log(result);
     if (result.success) {
         const cookieStore = await cookies()
         cookieStore.set('accessToken', result.data.accessToken, {
@@ -44,7 +44,8 @@ export const loginAction = async (prevState: LoginState, formData: FormData) => 
             maxAge: 60 * 60 * 24 * 7,
             sameSite: 'lax'
         });
-        redirect('/dashboard','replace')
+        redirect('/dashboard', 'replace')
     }
+    console.log(result)
     return result;
 }
