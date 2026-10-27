@@ -8,18 +8,21 @@ import { Mail, Lock, ArrowRight } from "lucide-react"
 import { loginAction } from "../_actions/loginAction"
 import { useActionState, useEffect } from "react"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 const LoginForm = () => {
+    const router = useRouter();
     const [state, action, pending] = useActionState(loginAction, false);
     useEffect(() => {
         if (!state) return;
         if (state.success) {
             toast.success(state.message || 'Login Successful')
+            router.push('/dashboard')
         }
         if (!state.success) {
             toast.error(state.message || 'Login Failed')
         }
-    }, [state])
+    }, [state,router])
     return (
         <Card className="border-border/60 bg-card/60 backdrop-blur-xl shadow-xl shadow-black/5">
             <CardContent className="p-6 sm:p-8">
