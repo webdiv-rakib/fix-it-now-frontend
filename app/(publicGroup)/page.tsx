@@ -1,106 +1,103 @@
-import Link from "next/link";
-import {
-  Search,
-  MapPin,
-  Star,
-  ShieldCheck,
-  Clock,
-  Sparkles,
-  Wrench,
-  ArrowRight,
-  Zap,
-  CheckCircle,
-  ThumbsUp,
-  SlidersHorizontal
-} from "lucide-react";
+// import Link from "next/link";
+// import {
+//   Search,
+//   MapPin,
+//   Star,
+//   ShieldCheck,
+//   Clock,
+//   Sparkles,
+//   Wrench,
+//   ArrowRight,
+//   Zap,
+//   CheckCircle,
+//   ThumbsUp,
+//   SlidersHorizontal
+// } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import NavBar from "@/components/shared/NavBar";
+// import { Badge } from "@/components/ui/badge";
+// import { Card, CardContent } from "@/components/ui/card";
+// import NavBar from "@/components/shared/NavBar";
 // import { getMe } from "@/service/getMe";
 
 // Mock data representing public API preview items
-const FEATURED_SERVICES = [
-  {
-    id: "srv-1",
-    title: "Emergency Pipe Leak Repair",
-    category: "Plumbing",
-    startingPrice: 45,
-    rating: 4.9,
-    reviewsCount: 128,
-    image: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=600&auto=format&fit=crop&q=80",
-    popular: true,
-  },
-  {
-    id: "srv-2",
-    title: "Circuit Breaker Diagnosis & Fix",
-    category: "Electrical",
-    startingPrice: 60,
-    rating: 4.85,
-    reviewsCount: 94,
-    image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&auto=format&fit=crop&q=80",
-    popular: false,
-  },
-  {
-    id: "srv-3",
-    title: "HVAC Deep Cleaning & Refill",
-    category: "Air Conditioning",
-    startingPrice: 75,
-    rating: 4.95,
-    reviewsCount: 210,
-    image: "https://images.unsplash.com/photo-1631545830607-ec074d2091ea?w=600&auto=format&fit=crop&q=80",
-    popular: true,
-  },
-  {
-    id: "srv-4",
-    title: "Drywall Patch & Interior Touchup",
-    category: "Carpentry",
-    startingPrice: 50,
-    rating: 4.79,
-    reviewsCount: 62,
-    image: "https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=600&auto=format&fit=crop&q=80",
-    popular: false,
-  },
-];
+// const FEATURED_SERVICES = [
+//   {
+//     id: "srv-1",
+//     title: "Emergency Pipe Leak Repair",
+//     category: "Plumbing",
+//     startingPrice: 45,
+//     rating: 4.9,
+//     reviewsCount: 128,
+//     image: "https://images.unsplash.com/photo-1585704032915-c3400ca199e7?w=600&auto=format&fit=crop&q=80",
+//     popular: true,
+//   },
+//   {
+//     id: "srv-2",
+//     title: "Circuit Breaker Diagnosis & Fix",
+//     category: "Electrical",
+//     startingPrice: 60,
+//     rating: 4.85,
+//     reviewsCount: 94,
+//     image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&auto=format&fit=crop&q=80",
+//     popular: false,
+//   },
+//   {
+//     id: "srv-3",
+//     title: "HVAC Deep Cleaning & Refill",
+//     category: "Air Conditioning",
+//     startingPrice: 75,
+//     rating: 4.95,
+//     reviewsCount: 210,
+//     image: "https://images.unsplash.com/photo-1631545830607-ec074d2091ea?w=600&auto=format&fit=crop&q=80",
+//     popular: true,
+//   },
+//   {
+//     id: "srv-4",
+//     title: "Drywall Patch & Interior Touchup",
+//     category: "Carpentry",
+//     startingPrice: 50,
+//     rating: 4.79,
+//     reviewsCount: 62,
+//     image: "https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?w=600&auto=format&fit=crop&q=80",
+//     popular: false,
+//   },
+// ];
 
-const TOP_TECHNICIANS = [
-  {
-    id: "tech-1",
-    name: "Marcus Vance",
-    specialty: "Master Electrician",
-    rating: 4.98,
-    jobsDone: 340,
-    hourlyRate: 55,
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
-    availableToday: true,
-  },
-  {
-    id: "tech-2",
-    name: "Elena Rostova",
-    specialty: "Plumbing Specialist",
-    rating: 4.92,
-    jobsDone: 215,
-    hourlyRate: 48,
-    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&auto=format&fit=crop&q=80",
-    availableToday: true,
-  },
-  {
-    id: "tech-3",
-    name: "David Chen",
-    specialty: "Appliance & HVAC Tech",
-    rating: 4.88,
-    jobsDone: 180,
-    hourlyRate: 50,
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80",
-    availableToday: false,
-  },
-];
+// const TOP_TECHNICIANS = [
+//   {
+//     id: "tech-1",
+//     name: "Marcus Vance",
+//     specialty: "Master Electrician",
+//     rating: 4.98,
+//     jobsDone: 340,
+//     hourlyRate: 55,
+//     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&auto=format&fit=crop&q=80",
+//     availableToday: true,
+//   },
+//   {
+//     id: "tech-2",
+//     name: "Elena Rostova",
+//     specialty: "Plumbing Specialist",
+//     rating: 4.92,
+//     jobsDone: 215,
+//     hourlyRate: 48,
+//     avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&auto=format&fit=crop&q=80",
+//     availableToday: true,
+//   },
+//   {
+//     id: "tech-3",
+//     name: "David Chen",
+//     specialty: "Appliance & HVAC Tech",
+//     rating: 4.88,
+//     jobsDone: 180,
+//     hourlyRate: 50,
+//     avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&auto=format&fit=crop&q=80",
+//     availableToday: false,
+//   },
+// ];
 
 
 export default async function HomePage() {
-  // console.log('Root Route');
-  // const user = await getMe()
-  // console.log(user);
   return (
     <div>
       Hello, Next.js!
