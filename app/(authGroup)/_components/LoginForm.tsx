@@ -1,14 +1,29 @@
+'use client'
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Mail, Lock, ArrowRight } from "lucide-react"
+import { loginAction } from "../_actions/loginAction"
+import { useActionState, useEffect } from "react"
+import { toast } from "sonner"
 
 const LoginForm = () => {
+    const [state, action, pending] = useActionState(loginAction, false);
+    useEffect(() => {
+        if (!state) return;
+        if (state.success) {
+            toast.success(state.message || 'Login Successful')
+        }
+        if (!state.success) {
+            toast.error(state.message || 'Login Failed')
+        }
+    }, [state])
     return (
         <Card className="border-border/60 bg-card/60 backdrop-blur-xl shadow-xl shadow-black/5">
             <CardContent className="p-6 sm:p-8">
-                <form className="space-y-5">
+                <form action={action} className="space-y-5">
                     {/* Email Field */}
                     <div className="space-y-2">
                         <Label
@@ -64,7 +79,9 @@ const LoginForm = () => {
                         type="submit"
                         className="w-full h-11 font-semibold bg-amber-400 text-slate-950 hover:bg-amber-300 transition-all shadow-md shadow-amber-400/20 active:scale-[0.99] rounded-lg mt-2 group"
                     >
-                        <span>Sign In</span>
+                        {
+                            pending ? 'Submitting...' : 'Login'
+                        }
                         <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                     </Button>
 
