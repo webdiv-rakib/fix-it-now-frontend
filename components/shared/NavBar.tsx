@@ -21,6 +21,8 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "../ui/button";
 import { logout } from "@/service/logout";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 /**
  * {
@@ -71,6 +73,7 @@ type NavBarProps = {
 };
 
 export default function NavBar({ user }: NavBarProps) {
+    const router = useRouter()
     const navLinks = [
         { name: "Services", href: "/services" },
         { name: "Technicians", href: "/technicians" },
@@ -78,9 +81,12 @@ export default function NavBar({ user }: NavBarProps) {
     ];
 
     const handleUserMenuAction = async (action: string) => {
+
         console.log(`User Menu Action:${action}`)
         if (action === 'logout') {
-            await logout()
+            await logout();
+            toast.success('User Logged Out Successfully');
+            router.push('/login')
         }
     }
     return (
