@@ -36,7 +36,7 @@ export default function NavBar({ user }: { user?: UserProfile }) {
 
                 {/* Brand Logo */}
                 <Link href="/" className="flex items-center gap-2.5 transition-transform hover:scale-[1.02]">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 text-slate-950 shadow-md shadow-amber-500/20">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-tr from-amber-500 to-amber-300 text-slate-950 shadow-md shadow-amber-500/20">
                         <Wrench className="h-5 w-5 fill-slate-950" />
                     </div>
                     <span className="text-xl font-black tracking-tight text-foreground">

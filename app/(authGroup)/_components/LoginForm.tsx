@@ -22,7 +22,7 @@ const LoginForm = () => {
         if (!state.success) {
             toast.error(state.message || 'Login Failed')
         }
-    }, [state])
+    }, [state, router])
     return (
         <Card className="border-border/60 bg-card/60 backdrop-blur-xl shadow-xl shadow-black/5">
             <CardContent className="p-6 sm:p-8">
