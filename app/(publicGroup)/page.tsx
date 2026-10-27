@@ -14,6 +14,7 @@
 //   SlidersHorizontal
 // } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getMe } from "@/service/getMe";
 // import { Badge } from "@/components/ui/badge";
 // import { Card, CardContent } from "@/components/ui/card";
 // import NavBar from "@/components/shared/NavBar";
@@ -98,6 +99,9 @@ import { Button } from "@/components/ui/button";
 
 
 export default async function HomePage() {
+  console.log('Root Route')
+  const user = await getMe();
+  console.log(user)
   return (
     <div>
       Hello, Next.js!
