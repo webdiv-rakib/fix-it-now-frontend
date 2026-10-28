@@ -70,24 +70,8 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-
-          {/* Popular Category Chips */}
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-2 text-xs text-muted-foreground">
-            <span className="font-medium text-foreground">Popular:</span>
-            {["Plumbing", "Electrical", "HVAC", "Painting", "Carpentry"].map((cat) => (
-              <Link
-                key={cat}
-                href={`/services?category=${cat.toLowerCase()}`}
-                className="rounded-full border border-border/60 bg-card/40 px-3 py-1 hover:border-amber-400 hover:text-amber-400 transition-colors"
-              >
-                {cat}
-              </Link>
-            ))}
-          </div>
-
         </div>
       </section>
     </div>
-
   );
 }
