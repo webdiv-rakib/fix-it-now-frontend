@@ -13,7 +13,7 @@ export default async function ServicesPage() {
         )
     }
     return (
-        <div className="min-h-screen pb-24">
+        <div className="min-h-screen pb-24 px-10">
             {/* 1. Header Banner */}
             <section className="relative border-b border-border/50 bg-card/30 py-12 md:py-16 backdrop-blur">
                 <div className="pointer-events-none absolute -top-24 left-1/2 -z-10 h-72 w-[550px] -translate-x-1/2 rounded-full bg-amber-500/10 blur-[120px]" />
