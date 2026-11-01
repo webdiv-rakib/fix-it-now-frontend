@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { getUserBookings } from "../_actions/getUserBookings";
 import CustomerBookingCard from "../_components/CustomerBookingCard";
 
+
 export default async function CustomerBookingsPage() {
     const res = await getUserBookings();
     const bookings = Array.isArray(res?.data) ? res.data : [];

@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Clock, CheckCircle2, XCircle, CreditCard, Calendar, MapPin, Loader2 } from "lucide-react";
+import { Clock, CheckCircle2, CreditCard, Calendar, MapPin, Loader2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { initiatePaymentAction } from "../_actions/initiatePaymentAction";
 
 interface CustomerBookingCardProps {
     booking: {
@@ -20,20 +21,37 @@ interface CustomerBookingCardProps {
     };
 }
 
-export default function CustomerBookingCard({ booking: initialBooking }: CustomerBookingCardProps) {
+export default function CustomerBookingCard({ booking }: CustomerBookingCardProps) {
     const router = useRouter();
-    const [booking, setBooking] = useState(initialBooking);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    // Poll for status changes while PENDING
-    // useEffect(() => {
+    // Poll for status updates every 5 seconds while PENDING
+    //   useEffect(() => {
     //     if (booking.status !== "PENDING") return;
 
-    //     const interval = setInterval(async () => {
-    //         router.refresh(); // Refresh Next.js server payload
+    //     const interval = setInterval(() => {
+    //       router.refresh();
     //     }, 5000);
 
     //     return () => clearInterval(interval);
-    // }, [booking.status, router]);
+    //   }, [booking.status, router]);
+
+    const handlePayment = async () => {
+        setLoading(true);
+        setError(null);
+
+        const res = await initiatePaymentAction(booking.bookingId);
+
+        const checkoutUrl = res?.data?.paymentUrl || res?.paymentUrl;
+
+        if (res?.success && checkoutUrl) {
+            window.location.href = checkoutUrl;
+        } else {
+            setLoading(false);
+            setError(res?.message || "Failed to start payment session.");
+        }
+    };
 
     const isPending = booking.status === "PENDING";
     const isAccepted = booking.status === "ACCEPTED";
@@ -45,7 +63,6 @@ export default function CustomerBookingCard({ booking: initialBooking }: Custome
             <CardContent className="p-5 flex flex-col md:flex-row md:items-center justify-between gap-5">
                 <div className="space-y-2">
                     <div className="flex items-center gap-2">
-                        {/* Dynamic Status Badge */}
                         <Badge
                             className={`text-[10px] font-bold ${isPending
                                     ? "bg-amber-400/10 text-amber-400 border border-amber-400/30"
@@ -83,13 +100,14 @@ export default function CustomerBookingCard({ booking: initialBooking }: Custome
                 </div>
 
                 {/* Action Button & Payment Trigger */}
-                <div className="flex items-center justify-between md:flex-col md:items-end gap-3 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-border/50">
+                <div className="flex items-center justify-between md:flex-col md:items-end gap-2 shrink-0 pt-3 md:pt-0 border-t md:border-t-0 border-border/50">
                     <div>
                         <span className="text-[10px] uppercase font-bold text-muted-foreground">Total</span>
                         <p className="text-lg font-black text-foreground">${booking.service?.price}</p>
                     </div>
 
-                    {/* Conditional Action based on state */}
+                    {error && <span className="text-[11px] text-rose-400">{error}</span>}
+
                     {isPending && (
                         <p className="text-[11px] text-amber-400/90 flex items-center gap-1.5 italic">
                             <Loader2 className="h-3 w-3 animate-spin" />
@@ -100,11 +118,21 @@ export default function CustomerBookingCard({ booking: initialBooking }: Custome
                     {isAccepted && (
                         <Button
                             size="sm"
-                            onClick={() => router.push(`/payment/${booking.bookingId}`)}
+                            disabled={loading}
+                            onClick={handlePayment}
                             className="h-8 gap-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-md shadow-emerald-500/20"
                         >
-                            <CreditCard className="h-3.5 w-3.5" />
-                            <span>Proceed to Pay</span>
+                            {loading ? (
+                                <>
+                                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                                    <span>Redirecting...</span>
+                                </>
+                            ) : (
+                                <>
+                                    <CreditCard className="h-3.5 w-3.5" />
+                                    <span>Proceed to Pay</span>
+                                </>
+                            )}
                         </Button>
                     )}
 
