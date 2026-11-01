@@ -6,6 +6,7 @@ export const getSingleService = async (serviceId: string) => {
             cache: "no-store",
         });
         return await res.json();
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
         return { success: false, data: null };
     }
