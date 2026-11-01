@@ -80,8 +80,7 @@ export default async function HomePage() {
               ))
             }
           </div>
-          {/* footer will be added here */}
-          {/* first exam end */}
+          
         </div>
       </section>
     </div>
