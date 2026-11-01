@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // export const dynamic = "force-dynamic";
 
-import { Calendar, Clock, MapPin, Phone, User, CheckCircle2, CheckCheck, Wrench, AlertCircle } from "lucide-react";
+import { Calendar, Clock, MapPin, Phone, User, CheckCircle2, CheckCheck, Wrench} from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getTechnicianBookings } from "../_actions/technicianBookings";
@@ -97,7 +97,7 @@ export default async function TechnicianBookingsPage() {
                                             </div>
                                             <div className="flex items-center gap-1.5">
                                                 <MapPin className="h-3.5 w-3.5 text-amber-400" />
-                                                <span className="truncate max-w-[200px]">{booking.serviceAddress}</span>
+                                                <span className="truncate max-w-50">{booking.serviceAddress}</span>
                                             </div>
                                         </div>
 
