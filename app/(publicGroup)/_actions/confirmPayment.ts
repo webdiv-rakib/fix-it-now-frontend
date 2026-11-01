@@ -27,6 +27,8 @@ export const confirmPaymentAction = async (sessionId: string) => {
 
         // Clear Next.js cache so the customer dashboard displays the fresh "PAID" status
         revalidatePath("/dashboard/bookings");
+        revalidatePath("/technician/bookings");
+        revalidatePath("/(dashboardGroup)/technician/bookings", "page");
 
         return result;
     } catch (error: any) {

@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Calendar, Clock, MapPin, Phone, User, CheckCircle2, AlertCircle } from "lucide-react";
+// export const dynamic = "force-dynamic";
 
+import { Calendar, Clock, MapPin, Phone, User, CheckCircle2, CheckCheck, Wrench, AlertCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getTechnicianBookings } from "../_actions/technicianBookings";
 import StatusActionButton from "../_components/StatusActionButton";
+
+
 
 export default async function TechnicianBookingsPage() {
     const res = await getTechnicianBookings();
@@ -33,12 +36,17 @@ export default async function TechnicianBookingsPage() {
             ) : (
                 <div className="grid grid-cols-1 gap-4">
                     {bookings.map((booking: any) => {
-                        const isPending = booking.status === "PENDING";
-                        const isAccepted = booking.status === "ACCEPTED";
+                        const rawStatus = (booking.status || "").toUpperCase().replace(/-/g, "_");
+                        const isPending = rawStatus === "PENDING";
+                        const isAccepted = rawStatus === "ACCEPTED";
+                        const isPaid = rawStatus === "PAID";
+                        const isInProgress = rawStatus === "IN_PROGRESS";
+                        const isCompleted = rawStatus === "COMPLETED";
+                        const targetId = booking.bookingId || booking.id;
 
                         return (
                             <Card
-                                key={booking.bookingId}
+                                key={targetId}
                                 className="border-border/70 bg-card/60 backdrop-blur transition-all hover:border-amber-400/40"
                             >
                                 <CardContent className="p-5 flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -50,13 +58,23 @@ export default async function TechnicianBookingsPage() {
                                                     ? "bg-amber-400/10 text-amber-400 border border-amber-400/30"
                                                     : isAccepted
                                                         ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"
-                                                        : "bg-muted text-muted-foreground"
+                                                        : isPaid
+                                                            ? "bg-blue-500/10 text-blue-400 border border-blue-500/30"
+                                                            : isInProgress
+                                                                ? "bg-sky-500/10 text-sky-400 border border-sky-500/30"
+                                                                : isCompleted
+                                                                    ? "bg-purple-500/10 text-purple-400 border border-purple-500/30"
+                                                                    : "bg-rose-500/10 text-rose-400 border border-rose-500/30"
                                                     }`}
                                             >
-                                                {booking.status}
+                                                {isPending && <Clock className="h-3 w-3 mr-1 animate-spin" />}
+                                                {isAccepted && <CheckCircle2 className="h-3 w-3 mr-1" />}
+                                                {isInProgress && <Wrench className="h-3 w-3 mr-1 animate-pulse" />}
+                                                {isCompleted && <CheckCheck className="h-3 w-3 mr-1" />}
+                                                {isInProgress ? "IN PROGRESS" : booking.status}
                                             </Badge>
                                             <span className="text-xs font-semibold text-muted-foreground">
-                                                #{booking.bookingId.slice(0, 8)}
+                                                #{targetId?.slice(0, 8)}
                                             </span>
                                         </div>
 
@@ -100,7 +118,7 @@ export default async function TechnicianBookingsPage() {
                                         </div>
 
                                         <StatusActionButton
-                                            bookingId={booking.bookingId}
+                                            bookingId={targetId}
                                             currentStatus={booking.status}
                                         />
                                     </div>

@@ -2,7 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Clock, CheckCircle2, CreditCard, Calendar, MapPin, Loader2 } from "lucide-react";
+import {
+    Clock,
+    CheckCircle2,
+    CreditCard,
+    Calendar,
+    MapPin,
+    Loader2,
+    CheckCheck,
+    Wrench,
+    XCircle
+} from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,7 +21,7 @@ import { initiatePaymentAction } from "../_actions/initiatePaymentAction";
 interface CustomerBookingCardProps {
     booking: {
         bookingId: string;
-        status: "PENDING" | "ACCEPTED" | "REJECTED" | "PAID" | "COMPLETED";
+        status: "PENDING" | "ACCEPTED" | "REJECTED" | "PAID" | "IN_PROGRESS" | "COMPLETED";
         scheduleDate: string;
         serviceAddress: string;
         service: {
@@ -26,23 +36,22 @@ export default function CustomerBookingCard({ booking }: CustomerBookingCardProp
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // Poll for status updates every 5 seconds while PENDING
-    //   useEffect(() => {
-    //     if (booking.status !== "PENDING") return;
+    // Poll for status updates every 5 seconds while waiting for technician confirmation
+    useEffect(() => {
+        if (booking.status !== "PENDING") return;
 
-    //     const interval = setInterval(() => {
-    //       router.refresh();
-    //     }, 5000);
+        const interval = setInterval(() => {
+            router.refresh();
+        }, 5000);
 
-    //     return () => clearInterval(interval);
-    //   }, [booking.status, router]);
+        return () => clearInterval(interval);
+    }, [booking.status, router]);
 
     const handlePayment = async () => {
         setLoading(true);
         setError(null);
 
         const res = await initiatePaymentAction(booking.bookingId);
-
         const checkoutUrl = res?.data?.paymentUrl || res?.paymentUrl;
 
         if (res?.success && checkoutUrl) {
@@ -56,13 +65,16 @@ export default function CustomerBookingCard({ booking }: CustomerBookingCardProp
     const isPending = booking.status === "PENDING";
     const isAccepted = booking.status === "ACCEPTED";
     const isPaid = booking.status === "PAID";
+    const isInProgress = booking.status === "IN_PROGRESS";
+    const isCompleted = booking.status === "COMPLETED";
     const isRejected = booking.status === "REJECTED";
 
     return (
-        <Card className="border-border/70 bg-card/60 backdrop-blur transition-all">
+        <Card className="border-border/70 bg-card/60 backdrop-blur transition-all hover:border-border">
             <CardContent className="p-5 flex flex-col md:flex-row md:items-center justify-between gap-5">
                 <div className="space-y-2">
                     <div className="flex items-center gap-2">
+                        {/* Dynamic Status Badge */}
                         <Badge
                             className={`text-[10px] font-bold ${isPending
                                     ? "bg-amber-400/10 text-amber-400 border border-amber-400/30"
@@ -70,12 +82,20 @@ export default function CustomerBookingCard({ booking }: CustomerBookingCardProp
                                         ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30"
                                         : isPaid
                                             ? "bg-blue-500/10 text-blue-400 border border-blue-500/30"
-                                            : "bg-rose-500/10 text-rose-400 border border-rose-500/30"
+                                            : isInProgress
+                                                ? "bg-sky-500/10 text-sky-400 border border-sky-500/30"
+                                                : isCompleted
+                                                    ? "bg-purple-500/10 text-purple-400 border border-purple-500/30"
+                                                    : "bg-rose-500/10 text-rose-400 border border-rose-500/30"
                                 }`}
                         >
                             {isPending && <Clock className="h-3 w-3 mr-1 animate-spin" />}
                             {isAccepted && <CheckCircle2 className="h-3 w-3 mr-1" />}
-                            {booking.status}
+                            {isPaid && <CheckCircle2 className="h-3 w-3 mr-1" />}
+                            {isInProgress && <Wrench className="h-3 w-3 mr-1 animate-pulse" />}
+                            {isCompleted && <CheckCheck className="h-3 w-3 mr-1" />}
+                            {isRejected && <XCircle className="h-3 w-3 mr-1" />}
+                            {isInProgress ? "IN PROGRESS" : booking.status}
                         </Badge>
 
                         <span className="text-xs text-muted-foreground font-semibold">
@@ -108,6 +128,7 @@ export default function CustomerBookingCard({ booking }: CustomerBookingCardProp
 
                     {error && <span className="text-[11px] text-rose-400">{error}</span>}
 
+                    {/* 1. Pending Technician Acceptance */}
                     {isPending && (
                         <p className="text-[11px] text-amber-400/90 flex items-center gap-1.5 italic">
                             <Loader2 className="h-3 w-3 animate-spin" />
@@ -115,6 +136,7 @@ export default function CustomerBookingCard({ booking }: CustomerBookingCardProp
                         </p>
                     )}
 
+                    {/* 2. Accepted by Technician -> Trigger Stripe Checkout */}
                     {isAccepted && (
                         <Button
                             size="sm"
@@ -136,12 +158,30 @@ export default function CustomerBookingCard({ booking }: CustomerBookingCardProp
                         </Button>
                     )}
 
+                    {/* 3. Paid & Scheduled */}
                     {isPaid && (
-                        <Badge variant="outline" className="text-emerald-400 border-emerald-500/30 text-xs">
+                        <Badge variant="outline" className="text-blue-400 border-blue-500/30 text-xs py-1">
                             Paid & Scheduled
                         </Badge>
                     )}
 
+                    {/* 4. In Progress */}
+                    {isInProgress && (
+                        <Badge variant="outline" className="text-sky-400 border-sky-500/30 text-xs py-1 gap-1">
+                            <Wrench className="h-3 w-3" />
+                            Service in Progress
+                        </Badge>
+                    )}
+
+                    {/* 5. Completed */}
+                    {isCompleted && (
+                        <Badge variant="outline" className="text-purple-400 border-purple-500/30 text-xs py-1 gap-1">
+                            <CheckCheck className="h-3 w-3" />
+                            Service Completed
+                        </Badge>
+                    )}
+
+                    {/* 6. Rejected */}
                     {isRejected && (
                         <p className="text-xs text-rose-400">Declined by specialist</p>
                     )}
