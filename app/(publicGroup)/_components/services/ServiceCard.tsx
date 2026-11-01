@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { Star, Clock, ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 /**
@@ -135,7 +134,7 @@ export async function ServiceCard({ service }: ServiceCardProps) {
                         </p>
                     </div>
 
-                    <Link href="/services/1">
+                    <Link href={`/services/${service.serviceId}`}>
                         <Button
                             size="sm"
                             className="h-9 gap-1.5 bg-amber-400 px-4 text-xs font-bold text-slate-950 hover:bg-amber-300 active:scale-[0.98] transition-all"
