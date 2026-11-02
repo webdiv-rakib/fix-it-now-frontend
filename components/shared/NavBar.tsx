@@ -24,30 +24,6 @@ import { logout } from "@/service/logout";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-/**
- * {
-    "success": true,
-    "statusCode": 201,
-    "message": "User fetched Successfully",
-    "data": {
-        "profile": {
-            "userId": "628b9f0b-5d54-4fb7-892d-acbb610b2417",
-            "name": "anm.rakib",
-            "email": "anm.rakib@gmail.com",
-            "role": "ADMIN",
-            "phone": "01794181719",
-            "address": "Pach Elasin,Delduar,Tangail",
-            "status": "ACTIVE",
-            "createdAt": "2026-10-08T20:25:03.771Z",
-            "updatedAt": "2026-10-08T20:27:26.174Z",
-            "technicianProfile": null
-        }
-    }
-}
- * 
- * 
- * 
- */
 type IUser = {
     success: boolean;
     statusCode: number;
@@ -64,16 +40,16 @@ type IUser = {
             createdAt: string;
             updatedAt: string;
             technicianProfile: null | any;
-        }
-    }
-}
+        };
+    };
+};
 
 type NavBarProps = {
     user: IUser;
 };
 
 export default function NavBar({ user }: NavBarProps) {
-    const router = useRouter()
+    const router = useRouter();
     const navLinks = [
         { name: "Services", href: "/services" },
         { name: "Technicians", href: "/technicians" },
@@ -81,20 +57,30 @@ export default function NavBar({ user }: NavBarProps) {
     ];
 
     const handleUserMenuAction = async (action: string) => {
-
-        console.log(`User Menu Action:${action}`)
-        if (action === 'logout') {
+        if (action === "logout") {
             await logout();
-            toast.success('User Logged Out Successfully');
-            router.push('/login')
+            toast.success("User Logged Out Successfully");
+            router.push("/login");
         }
-    }
+    };
+
+    // Determine dynamic dashboard destination by user role
+    const role = user?.data?.profile?.role?.toUpperCase();
+    const dashboardHref =
+        role === "ADMIN"
+            ? "/admin-dashboard"
+            : role === "TECHNICIAN"
+                ? "/technician-dashboard"
+                : "/dashboard";
+
     return (
         <header className="sticky top-0 z-50 w-full border-b border-border/50 bg-background/80 backdrop-blur-xl transition-all">
             <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-
                 {/* Brand Logo */}
-                <Link href="/" className="flex items-center gap-2.5 transition-transform hover:scale-[1.02]">
+                <Link
+                    href="/"
+                    className="flex items-center gap-2.5 transition-transform hover:scale-[1.02]"
+                >
                     <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-linear-to-tr from-amber-500 to-amber-300 text-slate-950 shadow-md shadow-amber-500/20">
                         <Wrench className="h-5 w-5 fill-slate-950" />
                     </div>
@@ -118,8 +104,8 @@ export default function NavBar({ user }: NavBarProps) {
 
                 {/* Avatar Dropdown */}
                 <div className="flex items-center gap-3">
-                    {
-                        user.success ? <DropdownMenu>
+                    {user?.success ? (
+                        <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                                 <button className="group relative flex h-10 w-10 items-center justify-center rounded-full border border-border/80 bg-card/60 transition-all hover:border-amber-400/50 focus:outline-none focus:ring-2 focus:ring-amber-400/30">
                                     <Avatar className="h-9 w-9">
@@ -137,22 +123,29 @@ export default function NavBar({ user }: NavBarProps) {
                                 <DropdownMenuLabel className="p-2 font-normal">
                                     <div className="flex flex-col space-y-1">
                                         <p className="text-sm font-semibold text-foreground leading-none">
-                                            {user?.data?.profile?.name || 'User Name'}
+                                            {user?.data?.profile?.name || "User Name"}
                                         </p>
                                         <p className="text-xs text-muted-foreground leading-none truncate">
-                                            {user?.data?.profile?.email || 'example@gmail.com'}
+                                            {user?.data?.profile?.email || "example@gmail.com"}
                                         </p>
                                     </div>
                                 </DropdownMenuLabel>
+
                                 <DropdownMenuSeparator className="bg-border/60" />
 
                                 <DropdownMenuItem asChild>
                                     <Link
-                                        href="/dashboard"
+                                        href={dashboardHref}
                                         className="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium hover:text-amber-500"
                                     >
                                         <LayoutDashboard className="h-4 w-4" />
-                                        <span>Dashboard</span>
+                                        <span>
+                                            {role === "ADMIN"
+                                                ? "Admin Portal"
+                                                : role === "TECHNICIAN"
+                                                    ? "Specialist Hub"
+                                                    : "My Dashboard"}
+                                        </span>
                                     </Link>
                                 </DropdownMenuItem>
 
@@ -171,21 +164,22 @@ export default function NavBar({ user }: NavBarProps) {
                                 <DropdownMenuItem
                                     className="flex cursor-pointer items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-rose-500 hover:bg-rose-500/10 focus:text-rose-500 transition-colors"
                                     onClick={async () => {
-                                        handleUserMenuAction('logout')
+                                        handleUserMenuAction("logout");
                                     }}
                                 >
                                     <LogOut className="h-4 w-4" />
                                     <span>Log out</span>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
-                        </DropdownMenu> : <Link href="/login">
+                        </DropdownMenu>
+                    ) : (
+                        <Link href="/login">
                             <Button variant="outline" size="sm">
                                 Log in
                             </Button>
                         </Link>
-                    }
+                    )}
                 </div>
-
             </div>
         </header>
     );
