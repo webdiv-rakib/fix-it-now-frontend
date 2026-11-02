@@ -3,7 +3,7 @@
 'use server'
 
 import { cookies } from "next/headers";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 const getAuthHeaders = async () => {
     const cookieStore = await cookies();
@@ -86,7 +86,7 @@ export const getAdminCategoriesAction = async () => {
     try {
         const res = await fetch(`${process.env.BACKEND_API_URL}/api/admin/categories`, {
             headers,
-            cache: "no-store",
+            next: { tags: ["admin-categories"], revalidate: 60 }, // caches for 60 seconds
         });
         return await res.json();
     } catch (error: any) {
@@ -104,7 +104,10 @@ export const createCategoryAction = async (payload: { name: string; description?
             body: JSON.stringify(payload),
         });
         const result = await res.json();
+
+        // revalidatePath alone invalidates the route cache and refreshes the list
         revalidatePath("/admin-dashboard/categories");
+
         return result;
     } catch (error: any) {
         return { success: false, message: error?.message || "Failed to create category" };

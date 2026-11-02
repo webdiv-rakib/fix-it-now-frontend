@@ -1,4 +1,4 @@
-import NavBar from '@/components/shared/NavBar'
+import NavBar from '@/components/shared/NavBar';
 import { getMe } from '@/service/getMe';
 import React from 'react'
 

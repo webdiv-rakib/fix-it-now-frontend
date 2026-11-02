@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// export const dynamic = "force-dynamic";
-
+import { Suspense } from "react";
 import {
     Users,
     Wrench,
@@ -13,8 +12,8 @@ import { Badge } from "@/components/ui/badge";
 import { getAdminOverviewAction } from "../_actions/adminActions";
 
 
-
-export default async function AdminDashboardPage() {
+// Async child component handling the dynamic request
+async function AdminOverviewContent() {
     const res = await getAdminOverviewAction();
     const data = res?.data || {
         metrics: {
@@ -30,25 +29,7 @@ export default async function AdminDashboardPage() {
     const { metrics, recentBookings } = data;
 
     return (
-        <div className="mx-auto max-w-6xl px-4 py-8 space-y-8">
-            {/* Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                    <div className="flex items-center gap-2">
-                        <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground">
-                            Admin <span className="text-amber-400">Control Center</span>
-                        </h1>
-                        <Badge className="bg-amber-400/10 text-amber-400 border-amber-400/30 gap-1 text-[11px]">
-                            <ShieldCheck className="h-3 w-3" />
-                            Super Admin
-                        </Badge>
-                    </div>
-                    <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                        Real-time analytics, user accounts, and booking transactions across FixItNow.
-                    </p>
-                </div>
-            </div>
-
+        <div className="space-y-8">
             {/* 4 Primary KPI Metric Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <Card className="border-border/70 bg-card/60 backdrop-blur">
@@ -98,9 +79,7 @@ export default async function AdminDashboardPage() {
 
             {/* Recent Activity Table */}
             <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                    <h2 className="text-lg font-bold text-foreground">Recent Bookings Activity</h2>
-                </div>
+                <h2 className="text-lg font-bold text-foreground">Recent Bookings Activity</h2>
 
                 <Card className="border-border/70 bg-card/60 backdrop-blur overflow-hidden">
                     <div className="overflow-x-auto">
@@ -130,7 +109,7 @@ export default async function AdminDashboardPage() {
                                                 <td className="py-3 px-4 font-mono font-bold text-[11px]">
                                                     #{(b.bookingId || b.id)?.slice(0, 8)}
                                                 </td>
-                                                <td className="py-3 px-4">{b.user?.name || "Customer"}</td>
+                                                <td className="py-3 px-4">{b.customer?.name || b.user?.name || "Customer"}</td>
                                                 <td className="py-3 px-4 font-medium">{b.service?.name}</td>
                                                 <td className="py-3 px-4 font-bold">${b.service?.price}</td>
                                                 <td className="py-3 px-4">
@@ -159,6 +138,53 @@ export default async function AdminDashboardPage() {
                     </div>
                 </Card>
             </div>
+        </div>
+    );
+}
+
+// Fallback skeleton
+function AdminOverviewSkeleton() {
+    return (
+        <div className="space-y-8 animate-pulse">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {[1, 2, 3, 4].map((i) => (
+                    <Card key={i} className="border-border/50 bg-card/40 p-4 space-y-3">
+                        <div className="h-3 w-24 bg-muted rounded" />
+                        <div className="h-7 w-16 bg-muted/80 rounded" />
+                        <div className="h-2.5 w-32 bg-muted/50 rounded" />
+                    </Card>
+                ))}
+            </div>
+            <Card className="border-border/50 bg-card/40 p-6 h-64" />
+        </div>
+    );
+}
+
+export default function AdminDashboardPage() {
+    return (
+        <div className="space-y-8">
+            {/* Header static shell */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                    <div className="flex items-center gap-2">
+                        <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                            Admin <span className="text-amber-400">Control Center</span>
+                        </h1>
+                        <Badge className="bg-amber-400/10 text-amber-400 border-amber-400/30 gap-1 text-[11px]">
+                            <ShieldCheck className="h-3 w-3" />
+                            Super Admin
+                        </Badge>
+                    </div>
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                        Real-time analytics, user accounts, and booking transactions across FixItNow.
+                    </p>
+                </div>
+            </div>
+
+            {/* Streamed dynamic content */}
+            <Suspense fallback={<AdminOverviewSkeleton />}>
+                <AdminOverviewContent />
+            </Suspense>
         </div>
     );
 }
