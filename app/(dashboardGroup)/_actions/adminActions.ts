@@ -25,13 +25,13 @@ export const getAdminOverviewAction = async () => {
 
         if (!res.ok) {
             const errorText = await res.text();
-            console.error(`[Admin Overview Error ${res.status}]:`, errorText);
+            // console.error(`[Admin Overview Error ${res.status}]:`, errorText);
             return { success: false, data: null, message: errorText };
         }
 
         return await res.json();
     } catch (error: any) {
-        console.error("[Admin Overview Fetch Failed]:", error?.message);
+        // console.error("[Admin Overview Fetch Failed]:", error?.message);
         return { success: false, data: null, message: error?.message };
     }
 };
