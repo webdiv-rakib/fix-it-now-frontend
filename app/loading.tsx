@@ -15,7 +15,7 @@ export default function GlobalLoading() {
                     <div className="absolute h-16 w-16 animate-ping rounded-2xl bg-amber-400/20 duration-1000" />
 
                     {/* Spinning Gradient Border */}
-                    <div className="absolute h-14 w-14 animate-spin rounded-2xl bg-gradient-to-tr from-amber-500 via-amber-300 to-transparent p-0.5" />
+                    <div className="absolute h-14 w-14 animate-spin rounded-2xl bg-linear-to-tr from-amber-500 via-amber-300 to-transparent p-0.5" />
 
                     {/* Central Logo Box */}
                     <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-card border border-border shadow-lg shadow-black/20">
@@ -37,7 +37,7 @@ export default function GlobalLoading() {
 
                 {/* Minimal Smooth Running Progress Bar */}
                 <div className="h-1 w-36 overflow-hidden rounded-full bg-muted/60">
-                    <div className="h-full w-1/2 rounded-full bg-gradient-to-r from-amber-500 to-amber-300 animate-[loadingSlide_1.4s_ease-in-out_infinite]" />
+                    <div className="h-full w-1/2 rounded-full bg-linear-to-r from-amber-500 to-amber-300 animate-[loadingSlide_1.4s_ease-in-out_infinite]" />
                 </div>
             </div>
         </div>
