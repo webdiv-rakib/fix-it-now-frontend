@@ -1,3 +1,4 @@
+// src/app/_components/category/AllCategory.tsx
 import Link from "next/link";
 import { Wrench, ArrowUpRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
@@ -13,7 +14,10 @@ export interface ICategory {
 
 export default function AllCategory({ category }: { category: ICategory }) {
     return (
-        <Link href={`/services?category=${encodeURIComponent(category.name)}`} className="group block">
+        <Link
+            href={`/services?category=${encodeURIComponent(category.name)}`}
+            className="group block"
+        >
             <Card className="h-full border-border/70 bg-card/60 backdrop-blur transition-all duration-300 hover:border-amber-400/50 hover:bg-card/90 hover:shadow-lg hover:shadow-amber-400/5 hover:-translate-y-1">
                 <CardContent className="p-5 flex flex-col justify-between h-full">
                     <div className="flex items-start justify-between gap-3">
@@ -36,7 +40,7 @@ export default function AllCategory({ category }: { category: ICategory }) {
 
                     {category._count?.services !== undefined && (
                         <div className="mt-4 pt-3 border-t border-border/40 text-[11px] font-semibold text-muted-foreground">
-                            {category._count.services} Available Services
+                            {category._count.services} Services
                         </div>
                     )}
                 </CardContent>
