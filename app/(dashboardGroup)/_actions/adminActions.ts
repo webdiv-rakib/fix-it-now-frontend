@@ -17,11 +17,23 @@ const getAuthHeaders = async () => {
 // 1. Overview
 export const getAdminOverviewAction = async () => {
     const headers = await getAuthHeaders();
-    const res = await fetch(`${process.env.BACKEND_API_URL}/api/admin/overview`, {
-        headers,
-        cache: "no-store",
-    });
-    return res.json();
+    try {
+        const res = await fetch(`${process.env.BACKEND_API_URL}/api/admin/overview`, {
+            headers,
+            cache: "no-store",
+        });
+
+        if (!res.ok) {
+            const errorText = await res.text();
+            console.error(`[Admin Overview Error ${res.status}]:`, errorText);
+            return { success: false, data: null, message: errorText };
+        }
+
+        return await res.json();
+    } catch (error: any) {
+        console.error("[Admin Overview Fetch Failed]:", error?.message);
+        return { success: false, data: null, message: error?.message };
+    }
 };
 
 export const getAdminUsersAction = async () => {
