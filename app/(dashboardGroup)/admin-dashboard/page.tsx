@@ -6,8 +6,6 @@ import {
     Wrench,
     CalendarCheck2,
     DollarSign,
-    ArrowUpRight,
-    Clock,
     ShieldCheck
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
