@@ -82,7 +82,7 @@ export default function NavBar({ user }: NavBarProps) {
         role === "ADMIN"
             ? "/admin-dashboard"
             : role === "TECHNICIAN"
-                ? "/technician"
+                ? "/technician-dashboard"
                 : "/dashboard";
 
     const dashboardLabel =
