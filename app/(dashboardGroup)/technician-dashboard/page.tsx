@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // export const dynamic = "force-dynamic";
 
-import { Calendar, Clock, MapPin, Phone, User, CheckCircle2, CheckCheck, Wrench } from "lucide-react";
+import { Calendar, Clock, MapPin, Phone, User, CheckCircle2, CheckCheck, Wrench, UserCog } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getTechnicianBookings } from "../_actions/technicianBookings";
@@ -31,21 +31,34 @@ export default async function TechnicianBookingsPage() {
                 </Badge>
             </div>
             <div className="flex items-center gap-2 border-b border-border/50 pb-4">
-                <Link
-                    href="/technician-dashboard"
-                    className="inline-flex items-center gap-2 rounded-xl bg-amber-400 px-3.5 py-1.5 text-xs font-bold text-slate-950 shadow-sm shadow-amber-400/20"
-                >
-                    <Wrench className="h-3.5 w-3.5" />
-                    <span>Assigned Bookings</span>
-                </Link>
+                <div className="flex flex-wrap items-center gap-2 border-b border-border/50 pb-4">
+                    {/* 1. Assigned Bookings */}
+                    <Link
+                        href="/technician-dashboard"
+                        className="inline-flex items-center gap-2 rounded-xl bg-amber-400 px-3.5 py-1.5 text-xs font-bold text-slate-950 shadow-sm shadow-amber-400/20"
+                    >
+                        <Wrench className="h-3.5 w-3.5" />
+                        <span>Assigned Bookings</span>
+                    </Link>
 
-                <Link
-                    href="/technician-dashboard/availability"
-                    className="inline-flex items-center gap-2 rounded-xl border border-border/70 bg-card/60 px-3.5 py-1.5 text-xs font-medium text-muted-foreground hover:border-amber-400/40 hover:text-foreground transition-all"
-                >
-                    <CalendarDays className="h-3.5 w-3.5 text-amber-400" />
-                    <span>Manage Available Slots</span>
-                </Link>
+                    {/* 2. Manage Available Slots */}
+                    <Link
+                        href="/technician-dashboard/availability"
+                        className="inline-flex items-center gap-2 rounded-xl border border-border/70 bg-card/60 px-3.5 py-1.5 text-xs font-medium text-muted-foreground hover:border-amber-400/40 hover:text-foreground transition-all"
+                    >
+                        <CalendarDays className="h-3.5 w-3.5 text-amber-400" />
+                        <span>Manage Available Slots</span>
+                    </Link>
+
+                    {/* 3. Profile & Services Setup */}
+                    <Link
+                        href="/technician-dashboard/profile"
+                        className="inline-flex items-center gap-2 rounded-xl border border-border/70 bg-card/60 px-3.5 py-1.5 text-xs font-medium text-muted-foreground hover:border-amber-400/40 hover:text-foreground transition-all"
+                    >
+                        <UserCog className="h-3.5 w-3.5 text-amber-400" />
+                        <span>Profile & Services</span>
+                    </Link>
+                </div>
             </div>
 
             {bookings.length === 0 ? (
