@@ -373,7 +373,7 @@ export default function TechnicianProfileAndServiceForms({ initialProfile, categ
                                 <div className="space-y-1.5">
                                     <label className="text-xs font-semibold text-foreground flex items-center gap-1.5">
                                         <DollarSign className="h-3.5 w-3.5 text-emerald-400" />
-                                        Starting Base Price ($) *
+                                        Starting Base Price (60$) *
                                     </label>
                                     <Input
                                         type="number"
@@ -381,7 +381,7 @@ export default function TechnicianProfileAndServiceForms({ initialProfile, categ
                                         min={1}
                                         value={price}
                                         onChange={(e) => setPrice(e.target.value)}
-                                        placeholder="e.g. 50"
+                                        placeholder="e.g. 60"
                                         className="border-border/70 bg-background/50 text-xs"
                                     />
                                 </div>

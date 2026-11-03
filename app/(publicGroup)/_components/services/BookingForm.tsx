@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { Calendar, MapPin, FileText, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,14 +36,16 @@ export default function BookingForm({ serviceId, price }: BookingFormProps) {
       notes: formData.notes,
     });
 
-    setLoading(false);
-
     if (res?.success) {
-      // Backend returns created booking object
-      const bookingId = res?.data?.bookingId || res?.data?.id;
-      router.push(`/dashboard/bookings?new=${bookingId}`);
+      toast.success("Booking placed successfully!");
+      // Revalidate Server Components and redirect to the customer dashboard
+      router.refresh();
+      router.push("/dashboard");
     } else {
-      setError(res?.message || "Failed to create booking. Please try again.");
+      setLoading(false);
+      const msg = res?.message || "Failed to create booking. Please try again.";
+      setError(msg);
+      toast.error(msg);
     }
   };
 
