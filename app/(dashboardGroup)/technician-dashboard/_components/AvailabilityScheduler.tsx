@@ -313,7 +313,7 @@ export default function AvailabilityScheduler({ initialSlots = [] }: Availabilit
                                     </p>
                                 </div>
                             ) : (
-                                <div className="space-y-3 max-h-[420px] overflow-y-auto pr-1">
+                                <div className="space-y-3 max-h-105 overflow-y-auto pr-1">
                                     {DAYS_OF_WEEK.map((day) => {
                                         const daySlots = slots.filter((s) => s.startsWith(`${day}:`));
                                         if (daySlots.length === 0) return null;
