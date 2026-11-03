@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // export const dynamic = "force-dynamic";
 
-import { Calendar, Clock, MapPin, Phone, User, CheckCircle2, CheckCheck, Wrench} from "lucide-react";
+import { Calendar, Clock, MapPin, Phone, User, CheckCircle2, CheckCheck, Wrench } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getTechnicianBookings } from "../_actions/technicianBookings";
 import StatusActionButton from "../_components/StatusActionButton";
+import Link from "next/link";
+import { CalendarDays } from "lucide-react";
 
 
 
@@ -27,6 +29,23 @@ export default async function TechnicianBookingsPage() {
                 <Badge variant="outline" className="w-fit border-border/70 text-xs">
                     Total: {bookings.length}
                 </Badge>
+            </div>
+            <div className="flex items-center gap-2 border-b border-border/50 pb-4">
+                <Link
+                    href="/technician-dashboard"
+                    className="inline-flex items-center gap-2 rounded-xl bg-amber-400 px-3.5 py-1.5 text-xs font-bold text-slate-950 shadow-sm shadow-amber-400/20"
+                >
+                    <Wrench className="h-3.5 w-3.5" />
+                    <span>Assigned Bookings</span>
+                </Link>
+
+                <Link
+                    href="/technician-dashboard/availability"
+                    className="inline-flex items-center gap-2 rounded-xl border border-border/70 bg-card/60 px-3.5 py-1.5 text-xs font-medium text-muted-foreground hover:border-amber-400/40 hover:text-foreground transition-all"
+                >
+                    <CalendarDays className="h-3.5 w-3.5 text-amber-400" />
+                    <span>Manage Available Slots</span>
+                </Link>
             </div>
 
             {bookings.length === 0 ? (
